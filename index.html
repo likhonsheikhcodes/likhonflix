@@ -3,39 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIKHONFLIX - Ultimate Streaming Experience</title>
-    <meta name="description" content="Experience premium streaming of movies and TV shows on LIKHONFLIX. Enjoy the latest releases and trending content in stunning quality.">
+    <title>LIKHONFLIX - Premium Streaming Experience</title>
+    <meta name="description" content="Experience premium streaming of movies and TV shows on LIKHONFLIX. Watch the latest releases in stunning quality.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="icon" href="https://likhon.dev/favicon.ico" type="image/x-icon">
     
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://likhon.dev/">
-    <meta property="og:title" content="LIKHONFLIX - Ultimate Streaming Experience">
-    <meta property="og:description" content="Experience premium streaming of movies and TV shows on LIKHONFLIX. Enjoy the latest releases and trending content in stunning quality.">
-    <meta property="og:image" content="https://likhon.dev/og-image.jpg">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://likhon.dev/">
-    <meta property="twitter:title" content="LIKHONFLIX - Ultimate Streaming Experience">
-    <meta property="twitter:description" content="Experience premium streaming of movies and TV shows on LIKHONFLIX. Enjoy the latest releases and trending content in stunning quality.">
-    <meta property="twitter:image" content="https://likhon.dev/twitter-image.jpg">
-
     <style>
         :root {
             --primary-color: #00ffff;
             --secondary-color: #1a1a1a;
-            --text-color: #ffffff;
+            --accent-color: #ff3e3e;
         }
         
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--secondary-color);
-            color: var(--text-color);
+        /* Advanced iframe protection */
+        iframe {
+            pointer-events: auto !important;
         }
-
+        
+        .iframe-container {
+            position: relative;
+        }
+        
+        .iframe-shield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -51,41 +48,31 @@
         }
         
         .glass-effect {
-            background: rgba(26, 26, 26, 0.8);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .poster-hover {
             transform: scale(1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .poster-hover:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
         }
         
         .banner-gradient {
-            background: linear-gradient(to top, rgba(26, 26, 26, 1) 0%, rgba(26, 26, 26, 0.7) 50%, rgba(26, 26, 26, 0) 100%);
+            background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 100%);
         }
         
-        .shimmer {
-            background: linear-gradient(90deg, #1a1a1a 0%, #333333 50%, #1a1a1a 100%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
         .embed-container {
             position: relative;
             padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
-            border-radius: 0.5rem;
+            border-radius: 1rem;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
         
@@ -95,137 +82,177 @@
             left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 0.5rem;
-        }
-
-        .genre-tag {
-            background: rgba(0, 255, 255, 0.2);
-            border: 1px solid var(--primary-color);
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            color: var(--primary-color);
-            transition: all 0.3s ease;
-        }
-
-        .genre-tag:hover {
-            background: var(--primary-color);
-            color: var(--secondary-color);
-        }
-
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--secondary-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        .loader-content {
-            text-align: center;
-        }
-
-        .loader-logo {
-            font-size: 48px;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-
-        .loader-spinner {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid var(--primary-color);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            border-radius: 1rem;
         }
 
         .nav-btn {
             position: relative;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
             overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-color);
+            transition: all 0.5s ease;
         }
 
         .nav-btn::after {
             content: '';
             position: absolute;
-            bottom: -2px;
-            left: 0;
+            bottom: 0;
+            right: -100%;
             width: 100%;
             height: 2px;
-            background-color: var(--primary-color);
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
+            background: var(--primary-color);
+            transition: all 0.5s ease;
+        }
+
+        .nav-btn:hover::before {
+            left: 0;
         }
 
         .nav-btn:hover::after {
-            transform: translateX(0);
+            right: 0;
         }
 
-        .debug-bar {
-            position: fixed;
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .play-btn {
+            background: var(--primary-color);
+            color: var(--secondary-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .play-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        .play-btn:hover::after {
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px) scale(1.1);
+            text-shadow: 0 0 15px var(--primary-color);
+        }
+
+        /* Enhanced Modal Design */
+        .modal-content {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+        }
+
+        /* Custom Player Controls */
+        .player-controls {
+            position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: var(--text-color);
-            padding: 10px;
-            font-size: 12px;
-            z-index: 1000;
+            padding: 1rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .debug-bar-content {
+        .embed-container:hover .player-controls {
+            opacity: 1;
+        }
+
+        /* Color Picker */
+        .color-picker {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
             display: flex;
-            justify-content: space-between;
+            gap: 0.5rem;
         }
 
-        .debug-item {
-            margin-right: 20px;
+        .color-option {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .color-option:hover {
+            transform: scale(1.2);
+        }
+
+        /* Loading Animation */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .loading-text {
+            animation: pulse 1.5s infinite;
+            color: var(--primary-color);
         }
     </style>
 </head>
-<body class="gradient-bg min-h-screen custom-scrollbar">
-    <!-- Loader -->
-    <div id="loader" class="loader">
-        <div class="loader-content">
-            <div class="loader-logo">LIKHONFLIX</div>
-            <div class="loader-spinner"></div>
-        </div>
-    </div>
-
+<body class="gradient-bg min-h-screen text-gray-100 custom-scrollbar">
     <!-- Navigation -->
     <nav class="glass-effect fixed w-full z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center space-x-4">
-                    <span class="text-3xl font-bold text-primary-color">
+                    <span class="text-3xl font-bold" style="color: var(--primary-color)">
                         LIKHONFLIX
                     </span>
                 </div>
                 <div class="flex items-center space-x-6">
-                    <button onclick="switchSection('trending')" class="nav-btn text-sm font-medium">
+                    <button onclick="switchSection('trending')" class="nav-btn">
                         <i class="fas fa-fire-alt mr-2"></i>Trending
                     </button>
-                    <button onclick="switchSection('movies')" class="nav-btn text-sm font-medium">
+                    <button onclick="switchSection('movies')" class="nav-btn">
                         <i class="fas fa-film mr-2"></i>Movies
                     </button>
-                    <button onclick="switchSection('shows')" class="nav-btn text-sm font-medium">
+                    <button onclick="switchSection('shows')" class="nav-btn">
                         <i class="fas fa-tv mr-2"></i>TV Shows
                     </button>
                     <div class="relative">
                         <input type="text" id="searchInput" 
-                               class="bg-gray-800 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-primary-color"
+                               class="search-input rounded-full py-2 px-4 pl-10 focus:outline-none"
                                placeholder="Search...">
                         <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                     </div>
@@ -237,7 +264,7 @@
     <!-- Main Content -->
     <main class="pt-16">
         <!-- Featured Banner -->
-        <div id="featuredBanner" class="relative h-[70vh] w-full overflow-hidden">
+        <div id="featuredBanner" class="relative h-[80vh] w-full overflow-hidden">
             <!-- Banner content will be dynamically inserted here -->
         </div>
 
@@ -245,23 +272,34 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <!-- Trending Section -->
             <section id="trendingSection" class="mb-12">
-                <h2 class="text-2xl font-bold mb-6">Trending Now</h2>
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-fire-alt mr-2" style="color: var(--primary-color)"></i>Trending Now
+                </h2>
                 <div id="trendingContent" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
                     <!-- Content will be dynamically loaded -->
                 </div>
             </section>
 
             <!-- Player Modal -->
-            <div id="playerModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden">
+            <div id="playerModal" class="fixed inset-0 bg-black bg-opacity-95 z-50 hidden backdrop-blur-sm">
                 <div class="container mx-auto h-full flex items-center justify-center px-4">
-                    <div class="w-full max-w-4xl">
-                        <div class="flex justify-end mb-4">
-                            <button onclick="closePlayer()" class="text-white hover:text-primary-color">
+                    <div class="w-full max-w-4xl modal-content p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 id="playerTitle" class="text-xl font-bold" style="color: var(--primary-color)"></h3>
+                            <button onclick="closePlayer()" class="text-white hover:text-primary-color transition-colors">
                                 <i class="fas fa-times text-2xl"></i>
                             </button>
                         </div>
-                        <div id="playerContainer" class="embed-container">
-                            <!-- Player will be inserted here -->
+                        <div class="iframe-container">
+                            <div id="playerContainer" class="embed-container">
+                                <!-- Player will be inserted here -->
+                            </div>
+                            <div class="color-picker">
+                                <div class="color-option bg-cyan-400" onclick="changePlayerColor('#00ffff')"></div>
+                                <div class="color-option bg-purple-500" onclick="changePlayerColor('#9f7aea')"></div>
+                                <div class="color-option bg-red-500" onclick="changePlayerColor('#f56565')"></div>
+                                <div class="color-option bg-green-500" onclick="changePlayerColor('#48bb78')"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -270,14 +308,14 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-secondary-color text-text-color py-8">
+    <footer class="bg-black bg-opacity-50 text-gray-300 py-8 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-wrap justify-between">
-                <div class="w-full md:w-1/3 mb-6 md:mb-0">
-                    <h3 class="text-2xl font-bold mb-4">LIKHONFLIX</h3>
-                    <p class="text-sm">Your ultimate streaming destination for the latest movies and TV shows.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4" style="color: var(--primary-color)">LIKHONFLIX</h3>
+                    <p class="text-sm text-gray-400">Your ultimate destination for premium streaming entertainment.</p>
                 </div>
-                <div class="w-full md:w-1/3 mb-6 md:mb-0">
+                <div>
                     <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
                     <ul class="space-y-2">
                         <li><a href="#" class="hover:text-primary-color transition-colors">Home</a></li>
@@ -286,84 +324,81 @@
                         <li><a href="#" class="hover:text-primary-color transition-colors">My List</a></li>
                     </ul>
                 </div>
-                <div class="w-full md:w-1/3">
-                    <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Connect With Me</h4>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-2xl hover:text-primary-color transition-colors"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-2xl hover:text-primary-color transition-colors"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-2xl hover:text-primary-color transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="https://t.me/likhonsheikh" target="_blank" class="social-icon text-2xl">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="https://github.com/likhonsheikhcodes" target="_blank" class="social-icon text-2xl">
+                            <i class="fab fa-github"></i>
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="mt-8 text-center text-sm">
-                <p>&copy; 2023 LIKHONFLIX. All rights reserved.</p>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
+                <p>&copy; 2024 LIKHONFLIX. Created by Likhon Sheikh.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Debug Bar -->
-    <div id="debugBar" class="debug-bar">
-        <div class="debug-bar-content">
-            <div class="debug-item" id="apiRequests">API Requests: 0</div>
-            <div class="debug-item" id="loadTime">Load Time: 0ms</div>
-            <div class="debug-item" id="errors">Errors: 0</div>
-        </div>
-    </div>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "LIKHONFLIX",
-      "url": "https://likhon.dev",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://likhon.dev/search?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
-
     <script>
         const TMDB_API_KEY = 'cd5b82de62e202dd4c99e6846d3a7670';
         const TMDB_API_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjZDViODJkZTYyZTIwMmRkNGM5OWU2ODQ2ZDNhNzY3MCIsIm5iZiI6MTczNzY1Mzk5OS41NDksInN1YiI6IjY3OTI3ZWVmMzAwNTVlYjdlOTkyMDRlMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yHacQ8XnWQEMHU0ohD9CiT9Lxfsa8dSlCzjYO727eRc';
-
-        let apiRequests = 0;
-        let errors = 0;
-        const startTime = performance.now();
+        
+        let currentPlayerColor = '#00ffff';
+        const VIDSRC_DOMAINS = ['vidsrc.xyz', 'vidsrc.me', 'vidsrc.in', 'vidsrc.pm', 'vidsrc.net'];
+        let currentDomainIndex = 0;
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-            }, 2000);
             loadFeaturedContent();
             loadTrendingContent();
             initializeSearch();
-            updateDebugBar();
+            initializeSectionSwitching();
         });
 
         async function fetchTMDB(endpoint) {
             try {
-                apiRequests++;
                 const response = await fetch(`https://api.themoviedb.org/3${endpoint}`, {
                     headers: {
                         'Authorization': `Bearer ${TMDB_API_TOKEN}`,
                         'Content-Type': 'application/json'
                     }
                 });
+                if (!response.ok) throw new Error('Network response was not ok');
                 return await response.json();
             } catch (error) {
                 console.error('TMDB API Error:', error);
-                errors++;
-                updateDebugBar();
                 return null;
             }
         }
 
+        function changePlayerColor(color) {
+            currentPlayerColor = color;
+            document.documentElement.style.setProperty('--primary-color', color);
+            if (document.querySelector('#playerContainer iframe')) {
+                const currentSrc = document.querySelector('#playerContainer iframe').src;
+                const newSrc = currentSrc.split('/color-')[0] + '/color-' + color.replace('#', '');
+                document.querySelector('#playerContainer iframe').src = newSrc;
+            }
+        }
+
+        function createSecureIframe(url) {
+            const iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.allowFullscreen = true;
+            iframe.allow = "encrypted-media";
+            
+            // Prevent unwanted popups and ads
+            iframe.sandbox = "allow-same-origin allow-scripts allow-forms allow-presentation";
+            
+            return iframe;
+        }
+
         async function loadFeaturedContent() {
             const data = await fetchTMDB('/trending/all/day');
-            if (data && data.results && data.results.length > 0) {
+            if (data?.results?.[0]) {
                 const featured = data.results[0];
                 const backdrop = `https://image.tmdb.org/t/p/original${featured.backdrop_path}`;
                 
@@ -376,50 +411,50 @@
                             <h1 class="text-4xl md:text-6xl font-bold mb-4">
                                 ${featured.title || featured.name}
                             </h1>
-                            <p class="text-lg md:text-xl mb-6 max-w-2xl">
+                            <p class="text-lg md:text-xl mb-6 max-w-2xl text-gray-200">
                                 ${featured.overview}
                             </p>
-                            <button onclick="playContent('${featured.id}', '${featured.media_type}')"
-                                    class="bg-primary-color hover:bg-opacity-80 text-secondary-color px-8 py-3 rounded-full
-                                           font-bold transition-all duration-300 flex items-center">
-                                <i class="fas fa-play mr-2"></i>
-                                Play Now
-                            </button>
+                            <div class="flex items-center space-x-4">
+                                <button onclick="playContent('${featured.id}', '${featured.media_type}', '${featured.title || featured.name}')"
+                                        class="play-btn px-8 py-3 rounded-full font-bold flex items-center">
+                                    <i class="fas fa-play mr-2"></i>
+                                    Play Now
+                                </button>
+                                <button class="bg-gray-800 bg-opacity-50 hover:bg-opacity-75 text-white px-8 py-3 rounded-full
+                                             font-bold transition-all duration-300 flex items-center">
+                                    <i class="fas fa-info-circle mr-2"></i>
+                                    More Info
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
             }
-            updateDebugBar();
         }
 
-        async function loadTrendingContent() {
-            const data = await fetchTMDB('/trending/all/week');
-            if (data && data.results) {
-                const container = document.getElementById('trendingContent');
-                container.innerHTML = data.results.map(item => `
-                    <div class="cursor-pointer poster-hover" 
-                         onclick="playContent('${item.id}', '${item.media_type}')">
-                        <img src="https://image.tmdb.org/t/p/w500${item.poster_path}"
-                             alt="${item.title || item.name}"
-                             class="w-full rounded-lg shadow-lg mb-2">
-                        <h3 class="font-semibold">${item.title || item.name}</h3>
-                        <p class="text-gray-400 text-sm">
-                            ${new Date(item.release_date || item.first_air_date).getFullYear() || 'N/A'}
-                        </p>
-                    </div>
-                `).join('');
-            }
-            updateDebugBar();
-        }
-
-        function playContent(id, mediaType) {
+        function playContent(id, mediaType, title) {
             const playerModal = document.getElementById('playerModal');
             const playerContainer = document.getElementById('playerContainer');
+            const playerTitle = document.getElementById('playerTitle');
             
-            let embedUrl = `https://vidsrc.xyz/embed/${mediaType === 'movie' ? 'movie' : 'tv'}?tmdb=${id}`;
-            playerContainer.innerHTML = `<iframe src="${embedUrl}" allowfullscreen></iframe>`;
+            let embedUrl = `https://${VIDSRC_DOMAINS[currentDomainIndex]}/embed/${mediaType === 'movie' ? 'movie' : 'tv'}?tmdb=${id}/color-${currentPlayerColor.replace('#', '')}`;
+            
+            // Create secure iframe
+            const iframe = createSecureIframe(embedUrl);
+            
+            playerContainer.innerHTML = '';
+            playerContainer.appendChild(iframe);
+            
+            playerTitle.textContent = title;
             playerModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+
+            // Add error handling for iframe load
+            iframe.onerror = () => {
+                currentDomainIndex = (currentDomainIndex + 1) % VIDSRC_DOMAINS.length;
+                embedUrl = `https://${VIDSRC_DOMAINS[currentDomainIndex]}/embed/${mediaType === 'movie' ? 'movie' : 'tv'}?tmdb=${id}/color-${currentPlayerColor.replace('#', '')}`;
+                iframe.src = embedUrl;
+            };
         }
 
         function closePlayer() {
@@ -430,6 +465,30 @@
             document.body.style.overflow = 'auto';
         }
 
+        // Handle escape key for player modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closePlayer();
+            }
+        });
+
+        // Initialize section switching
+        function initializeSectionSwitching() {
+            const sections = {
+                trending: '/trending/all/week',
+                movies: '/movie/popular',
+                shows: '/tv/popular'
+            };
+
+            Object.entries(sections).forEach(([section, endpoint]) => {
+                document.querySelector(`[onclick="switchSection('${section}')"]`).addEventListener('click', async () => {
+                    const data = await fetchTMDB(endpoint);
+                    updateContentGrid(data?.results);
+                });
+            });
+        }
+
+        // Initialize search functionality
         function initializeSearch() {
             const searchInput = document.getElementById('searchInput');
             let timeout;
@@ -440,47 +499,47 @@
                     const query = e.target.value.trim();
                     if (query.length > 2) {
                         const data = await fetchTMDB(`/search/multi?query=${encodeURIComponent(query)}`);
-                        if (data && data.results) {
-                            const container = document.getElementById('trendingContent');
-                            container.innerHTML = data.results
-                                .filter(item => item.poster_path)
-                                .map(item => `
-                                    <div class="cursor-pointer poster-hover" 
-                                         onclick="playContent('${item.id}', '${item.media_type}')">
-                                        <img src="https://image.tmdb.org/t/p/w500${item.poster_path}"
-                                             alt="${item.title || item.name}"
-                                             class="w-full rounded-lg shadow-lg mb-2">
-                                        <h3 class="font-semibold">${item.title || item.name}</h3>
-                                        <p class="text-gray-400 text-sm">
-                                            ${item.media_type.toUpperCase()}
-                                        </p>
-                                    </div>
-                                `).join('');
-                        }
+                        updateContentGrid(data?.results);
                     }
-                    updateDebugBar();
                 }, 500);
             });
         }
 
-        function switchSection(section) {
-            // Implement section switching logic
-            console.log(`Switching to ${section}`);
+        // Update content grid
+        function updateContentGrid(items) {
+            if (!items) return;
+            
+            const container = document.getElementById('trendingContent');
+            container.innerHTML = items
+                .filter(item => item.poster_path)
+                .map(item => `
+                    <div class="cursor-pointer poster-hover" 
+                         onclick="playContent('${item.id}', '${item.media_type}', '${item.title || item.name}')">
+                        <div class="relative">
+                            <img src="https://image.tmdb.org/t/p/w500${item.poster_path}"
+                                 alt="${item.title || item.name}"
+                                 class="w-full rounded-lg shadow-lg">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-50 
+                                        transition-opacity rounded-lg flex items-center justify-center 
+                                        opacity-0 hover:opacity-100">
+                                <i class="fas fa-play text-2xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold mt-2">${item.title || item.name}</h3>
+                        <div class="flex items-center text-sm text-gray-400 mt-1">
+                            <span>${new Date(item.release_date || item.first_air_date).getFullYear() || 'N/A'}</span>
+                            <span class="mx-2">•</span>
+                            <span class="capitalize">${item.media_type}</span>
+                        </div>
+                    </div>
+                `).join('');
         }
 
-        function updateDebugBar() {
-            document.getElementById('apiRequests').textContent = `API Requests: ${apiRequests}`;
-            document.getElementById('loadTime').textContent = `Load Time: ${Math.round(performance.now() - startTime)}ms`;
-            document.getElementById('errors').textContent = `Errors: ${errors}`;
+        // Load trending content
+        async function loadTrendingContent() {
+            const data = await fetchTMDB('/trending/all/week');
+            updateContentGrid(data?.results);
         }
-
-        // Handle escape key for player modal
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closePlayer();
-            }
-        });
     </script>
 </body>
 </html>
-
