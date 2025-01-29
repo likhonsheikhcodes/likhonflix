@@ -1,4 +1,4 @@
-const TMDB_API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjZDViODJkZTYyZTIwMmRkNGM5OWU2ODQ2ZDNhNzY3MCIsIm5iZiI6MTczNzY1Mzk5OS41NDksInN1YiI6IjY3OTI3ZWVmMzAwNTVlYjdlOTkyMDRlMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yHacQ8XnWQEMHU0ohD9CiT9Lxfsa8dSlCzjYO727eRc" // Replace with your actual API key
+const TMDB_API_KEY = "cd5b82de62e202dd4c99e6846d3a7670" // Replace with your actual API key
 
 const VIDEO_SOURCES = [
   {
